@@ -33,6 +33,7 @@ export const useUserStore = defineStore({
         getLogin(data)
           .then(data => {
             if (data) {
+              console.log("data <= ", data);
               setToken(data.data);
               resolve(data);
             }

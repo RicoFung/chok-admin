@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { buildOAuth2Url } from "@/utils/oauth2-standard";
+import { openWindow } from "@/components/ReWindow";
 
 defineOptions({
   name: "OAuth2"
@@ -7,7 +8,10 @@ defineOptions({
 
 const clickAuthCode = () => {
   const authUrl = buildOAuth2Url();
-  window.location.href = authUrl;
+  // 跳转式
+  // window.location.href = authUrl;
+  // 弹窗式
+  openWindow({ url: authUrl });
 };
 </script>
 

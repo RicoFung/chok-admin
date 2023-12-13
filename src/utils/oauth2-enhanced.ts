@@ -52,8 +52,8 @@ export async function buildOAuth2Url(): Promise<string> {
   const codeChallenge = await generateCodeChallenge(codeVerifier);
   console.log("codeVerifier => ", codeVerifier);
   console.log("codeChallenge => ", codeChallenge);
-  // Store codeVerifier in local storage for later use
-  localStorage.setItem("pkce_code_verifier", codeVerifier);
+  // Store codeVerifier in session storage for later use
+  sessionStorage.setItem("pkce_code_verifier", codeVerifier);
 
   const scopeString = encodeURIComponent(scopes.join(" "));
   return `${authServerUrl}/authorize?client_id=${clientId}&response_type=code&scope=${scopeString}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${encodeURIComponent(
@@ -61,10 +61,10 @@ export async function buildOAuth2Url(): Promise<string> {
   )}`;
 }
 
-export async function getAccessToken(code: string): Promise<string | null> {
+export async function fetchOAuth2Data(code: string): Promise<string | null> {
   const { clientId, clientSecret, grantType, redirectUri, tokenEndpoint } =
     clientConfig;
-  const codeVerifier = localStorage.getItem("pkce_code_verifier");
+  const codeVerifier = sessionStorage.getItem("pkce_code_verifier");
   const credentials = btoa(`${clientId}:${clientSecret}`);
   const headers = {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -83,10 +83,10 @@ export async function getAccessToken(code: string): Promise<string | null> {
       headers: headers
     });
     // After the token is obtained, clear the stored code verifier
-    localStorage.removeItem("pkce_code_verifier");
-    return resp.data.access_token;
+    sessionStorage.removeItem("pkce_code_verifier");
+    return resp.data;
   } catch (error) {
-    console.error("Error fetching access token", error);
+    console.error("Error fetching OAuth2 data", error);
     return null;
   }
 }

@@ -24,7 +24,7 @@ export function buildOAuth2Url(): string {
   )}`;
 }
 
-export async function getAccessToken(code: string): Promise<string | null> {
+export async function fetchOAuth2Data(code: string): Promise<string | null> {
   const { clientId, clientSecret, grantType, redirectUri, tokenEndpoint } =
     clientConfig;
   const credentials = btoa(`${clientId}:${clientSecret}`);
@@ -43,7 +43,7 @@ export async function getAccessToken(code: string): Promise<string | null> {
     const resp = await axios.post(tokenEndpoint, params, {
       headers: headers
     });
-    return resp.data.access_token;
+    return resp.data;
   } catch (error) {
     console.error("Error fetching access token", error);
     return null;

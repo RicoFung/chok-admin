@@ -23,6 +23,9 @@ import Lock from "@iconify-icons/ri/lock-fill";
 import Check from "@iconify-icons/ep/check";
 import User from "@iconify-icons/ri/user-3-fill";
 
+import { buildOAuth2Url } from "@/utils/oauth2-enhanced";
+import { openWindow } from "@/components/ReWindow";
+
 defineOptions({
   name: "Login"
 });
@@ -65,6 +68,11 @@ const onLogin = async (formEl: FormInstance | undefined) => {
       return fields;
     }
   });
+};
+
+const onLoginOAuth2 = async () => {
+  const authUrl = await buildOAuth2Url();
+  openWindow({ url: authUrl });
 };
 
 /** 使用公共函数，避免`removeEventListener`失效 */
@@ -189,6 +197,18 @@ onBeforeUnmount(() => {
               </el-button>
             </Motion>
           </el-form>
+
+          <Motion :delay="250">
+            <el-button
+              class="w-full mt-4"
+              size="default"
+              type="primary"
+              :loading="loading"
+              @click="onLoginOAuth2()"
+            >
+              {{ t("login.loginOAuth2") }}
+            </el-button>
+          </Motion>
         </div>
       </div>
     </div>
