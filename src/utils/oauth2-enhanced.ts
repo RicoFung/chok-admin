@@ -10,8 +10,8 @@ export const clientConfig = {
   clientSecret: "123", // 注意：在前端代码中暴露 clientSecret 是不安全的，通常这应该在服务器端处理。
   scopes: ["openid", "test.read"],
   grantType: "authorization_code",
-  redirectUri: "https://client-server:8848/authorized-enhanced",
-  authServerUrl: "http://auth-server:9000/oauth2",
+  redirectUri: "https://client-server:8848/oauth2callback-enhanced",
+  authServerUrl: "http://auth-server:9000",
   tokenEndpoint: "/oauth2-server/oauth2/token"
 };
 
@@ -56,7 +56,23 @@ export async function buildOAuth2Url(): Promise<string> {
   sessionStorage.setItem("pkce_code_verifier", codeVerifier);
 
   const scopeString = encodeURIComponent(scopes.join(" "));
-  return `${authServerUrl}/authorize?client_id=${clientId}&response_type=code&scope=${scopeString}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${encodeURIComponent(
+  return `${authServerUrl}/oauth2/authorize?client_id=${clientId}&response_type=code&scope=${scopeString}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${encodeURIComponent(
+    redirectUri
+  )}`;
+}
+
+export async function buildLogoutUrl(): Promise<string | null> {
+  const { clientId, redirectUri, authServerUrl, scopes } = clientConfig;
+  // PKCE Code Verifier and Challenge
+  const codeVerifier = generateCodeVerifier();
+  const codeChallenge = await generateCodeChallenge(codeVerifier);
+  console.log("codeVerifier => ", codeVerifier);
+  console.log("codeChallenge => ", codeChallenge);
+  // Store codeVerifier in session storage for later use
+  sessionStorage.setItem("pkce_code_verifier", codeVerifier);
+
+  const scopeString = encodeURIComponent(scopes.join(" "));
+  return `${authServerUrl}/logout?client_id=${clientId}&response_type=code&scope=${scopeString}&code_challenge=${codeChallenge}&code_challenge_method=S256&redirect_uri=${encodeURIComponent(
     redirectUri
   )}`;
 }

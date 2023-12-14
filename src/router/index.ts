@@ -97,7 +97,11 @@ export function resetRouter() {
 }
 
 /** 路由白名单 */
-const whiteList = ["/login", "/authorized-standard", "/authorized-enhanced"];
+const whiteList = [
+  "/login",
+  "/oauth2callback-standard",
+  "/oauth2callback-enhanced"
+];
 
 const { VITE_HIDE_HOME } = import.meta.env;
 

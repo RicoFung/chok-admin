@@ -29,9 +29,9 @@ export default [
     ]
   },
   {
-    path: "/authorized-standard",
-    name: "AuthorizedStandard",
-    component: () => import("@/views/oauth2/authorized-standard.vue"),
+    path: "/oauth2callback-standard",
+    name: "OAuth2CallbackStandard",
+    component: () => import("@/views/oauth2/oauth2callback-standard.vue"),
     meta: {
       title: "回调中...",
       showLink: false,
@@ -39,9 +39,9 @@ export default [
     }
   },
   {
-    path: "/authorized-enhanced",
-    name: "AuthorizedEnhanced",
-    component: () => import("@/views/oauth2/authorized-enhanced.vue"),
+    path: "/oauth2callback-enhanced",
+    name: "OAuth2CallbackEnhanced",
+    component: () => import("@/views/oauth2/oauth2callback-enhanced.vue"),
     meta: {
       title: "回调中...",
       showLink: false,

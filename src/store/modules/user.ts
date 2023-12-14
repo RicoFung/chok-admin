@@ -8,6 +8,8 @@ import { getLogin, refreshTokenApi } from "@/api/user";
 import { UserResult, RefreshTokenResult } from "@/api/user";
 import { useMultiTagsStoreHook } from "@/store/modules/multiTags";
 import { type DataInfo, setToken, removeToken, sessionKey } from "@/utils/auth";
+import { buildLogoutUrl as buildLogoutUrlStandard } from "@/utils/oauth2-standard";
+import { buildLogoutUrl as buildLogoutUrlEnhanced } from "@/utils/oauth2-enhanced";
 
 export const useUserStore = defineStore({
   id: "pure-user",
@@ -51,6 +53,24 @@ export const useUserStore = defineStore({
       useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
       resetRouter();
       router.push("/login");
+    },
+    async logOutOAuth2Standard() {
+      this.username = "";
+      this.roles = [];
+      removeToken();
+      useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
+      resetRouter();
+      const authUrl = await buildLogoutUrlStandard();
+      window.location.href = authUrl;
+    },
+    async logOutOAuth2Enhanced() {
+      this.username = "";
+      this.roles = [];
+      removeToken();
+      useMultiTagsStoreHook().handleTags("equal", [...routerArrays]);
+      resetRouter();
+      const authUrl = await buildLogoutUrlEnhanced();
+      window.location.href = authUrl;
     },
     /** 刷新`token` */
     async handRefreshToken(data) {

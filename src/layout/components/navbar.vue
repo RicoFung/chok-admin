@@ -15,6 +15,8 @@ const {
   layout,
   device,
   logout,
+  logOutOAuth2Standard,
+  logOutOAuth2Enhanced,
   onPanel,
   pureApp,
   username,
@@ -97,6 +99,20 @@ const { t, locale, translationCh, translationEn } = useTranslationLang();
                 style="margin: 5px"
               />
               {{ t("buttons.hsLoginOut") }}
+            </el-dropdown-item>
+            <el-dropdown-item @click="logOutOAuth2Standard">
+              <IconifyIconOffline
+                :icon="LogoutCircleRLine"
+                style="margin: 5px"
+              />
+              {{ t("buttons.hsLoginOutOAuth2Standard") }}
+            </el-dropdown-item>
+            <el-dropdown-item @click="logOutOAuth2Enhanced">
+              <IconifyIconOffline
+                :icon="LogoutCircleRLine"
+                style="margin: 5px"
+              />
+              {{ t("buttons.hsLoginOutOAuth2Enhanced") }}
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>

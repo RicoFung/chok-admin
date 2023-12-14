@@ -1,5 +1,7 @@
 buttons:
   hsLoginOut: LoginOut
+  hsLoginOutOAuth2Standard: LoginOut（OAuth2 Standard）
+  hsLoginOutOAuth2Enhanced: LoginOut（OAuth2 Enhanced）
   hsfullscreen: FullScreen
   hsexitfullscreen: ExitFullscreen
   hsrefreshRoute: RefreshRoute

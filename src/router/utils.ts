@@ -328,10 +328,7 @@ function getHistoryMode(routerHistory): RouterHistory {
   // no param
   if (historyMode.length === 1) {
     if (leftMode === "hash") {
-      if (
-        !window.location.href.includes("authorized") //&&
-        //!window.location.href.includes("authorizedpkce")
-      ) {
+      if (!window.location.href.includes("oauth2callback")) {
         return createWebHashHistory("");
       } else {
         return createWebHistory("");
@@ -342,10 +339,7 @@ function getHistoryMode(routerHistory): RouterHistory {
   } //has param
   else if (historyMode.length === 2) {
     if (leftMode === "hash") {
-      if (
-        !window.location.href.includes("authorized") //&&
-        //!window.location.href.includes("authorizedpkce")
-      ) {
+      if (!window.location.href.includes("oauth2callback")) {
         return createWebHashHistory(rightMode);
       } else {
         return createWebHistory(rightMode);

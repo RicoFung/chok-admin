@@ -21,7 +21,7 @@ const oauth2Data: DataInfo<number> = {
 const oauth2DataText = ref<string | null>(null);
 
 onMounted(async () => {
-  // await getOAuth2Data();
+  await getOAuth2Data();
 });
 
 const getOAuth2Data = async () => {

@@ -1,5 +1,7 @@
 buttons:
   hsLoginOut: 退出系统
+  hsLoginOutOAuth2Standard: 退出系统（OAuth2 标准）
+  hsLoginOutOAuth2Enhanced: 退出系统（OAuth2 增强）
   hsfullscreen: 全屏
   hsexitfullscreen: 退出全屏
   hsrefreshRoute: 刷新路由

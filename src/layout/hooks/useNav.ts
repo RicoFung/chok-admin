@@ -86,6 +86,12 @@ export function useNav() {
   function logout() {
     useUserStoreHook().logOut();
   }
+  function logOutOAuth2Standard() {
+    useUserStoreHook().logOutOAuth2Standard();
+  }
+  function logOutOAuth2Enhanced() {
+    useUserStoreHook().logOutOAuth2Enhanced();
+  }
 
   function backTopMenu() {
     router.push(getTopMenu()?.path);
@@ -129,6 +135,8 @@ export function useNav() {
     device,
     layout,
     logout,
+    logOutOAuth2Standard,
+    logOutOAuth2Enhanced,
     routers,
     $storage,
     backTopMenu,
