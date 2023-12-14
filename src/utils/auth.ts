@@ -67,6 +67,41 @@ export function setToken(data: DataInfo<Date>) {
   }
 }
 
+export function setOAuth2Token(data: DataInfo<number>) {
+  let expires = 0;
+  const { accessToken, refreshToken } = data;
+  expires = data.expires;
+  const cookieString = JSON.stringify({ accessToken, expires });
+
+  expires > 0
+    ? Cookies.set(TokenKey, cookieString, {
+        expires: (expires - Date.now()) / 86400000
+      })
+    : Cookies.set(TokenKey, cookieString);
+
+  function setSessionKey(username: string, roles: Array<string>) {
+    useUserStoreHook().SET_USERNAME(username);
+    useUserStoreHook().SET_ROLES(roles);
+    storageSession().setItem(sessionKey, {
+      refreshToken,
+      expires,
+      username,
+      roles
+    });
+  }
+
+  if (data.username && data.roles) {
+    const { username, roles } = data;
+    setSessionKey(username, roles);
+  } else {
+    const username =
+      storageSession().getItem<DataInfo<number>>(sessionKey)?.username ?? "";
+    const roles =
+      storageSession().getItem<DataInfo<number>>(sessionKey)?.roles ?? [];
+    setSessionKey(username, roles);
+  }
+}
+
 /** 删除`token`以及key值为`user-info`的session信息 */
 export function removeToken() {
   Cookies.remove(TokenKey);

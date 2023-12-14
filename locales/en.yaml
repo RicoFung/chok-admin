@@ -38,7 +38,8 @@ login:
   username: Username
   password: Password
   login: Login
-  loginOAuth2: OAuth2 Login
+  loginOAuth2Standard: OAuth2 Login（Standard）
+  loginOAuth2Enhanced: OAuth2 Login（Enhanced）
   usernameReg: Please enter username
   passwordReg: Please enter password
   passwordRuleReg: The password format should be any combination of 8-18 digits

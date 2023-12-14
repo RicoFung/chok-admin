@@ -23,8 +23,8 @@ import Lock from "@iconify-icons/ri/lock-fill";
 import Check from "@iconify-icons/ep/check";
 import User from "@iconify-icons/ri/user-3-fill";
 
-import { buildOAuth2Url } from "@/utils/oauth2-enhanced";
-import { openWindow } from "@/components/ReWindow";
+import { buildOAuth2Url as buildOAuth2UrlStandard } from "@/utils/oauth2-standard";
+import { buildOAuth2Url as buildOAuth2UrlEnhanced } from "@/utils/oauth2-enhanced";
 
 defineOptions({
   name: "Login"
@@ -58,6 +58,7 @@ const onLogin = async (formEl: FormInstance | undefined) => {
           if (res.success) {
             // 获取后端路由
             initRouter().then(() => {
+              console.log("TopMenu: ", getTopMenu(true).path);
               router.push(getTopMenu(true).path);
               message("登录成功", { type: "success" });
             });
@@ -70,9 +71,16 @@ const onLogin = async (formEl: FormInstance | undefined) => {
   });
 };
 
-const onLoginOAuth2 = async () => {
-  const authUrl = await buildOAuth2Url();
-  openWindow({ url: authUrl });
+/** 使用 OAuth2 登录（标准） */
+const onLoginOAuth2Standard = async () => {
+  const authUrl = await buildOAuth2UrlStandard();
+  window.location.href = authUrl;
+};
+
+/** 使用 OAuth2 登录（增强） */
+const onLoginOAuth2Enhanced = async () => {
+  const authUrl = await buildOAuth2UrlEnhanced();
+  window.location.href = authUrl;
 };
 
 /** 使用公共函数，避免`removeEventListener`失效 */
@@ -204,9 +212,21 @@ onBeforeUnmount(() => {
               size="default"
               type="primary"
               :loading="loading"
-              @click="onLoginOAuth2()"
+              @click="onLoginOAuth2Standard()"
             >
-              {{ t("login.loginOAuth2") }}
+              {{ t("login.loginOAuth2Standard") }}
+            </el-button>
+          </Motion>
+
+          <Motion :delay="250">
+            <el-button
+              class="w-full mt-4"
+              size="default"
+              type="primary"
+              :loading="loading"
+              @click="onLoginOAuth2Enhanced()"
+            >
+              {{ t("login.loginOAuth2Enhanced") }}
             </el-button>
           </Motion>
         </div>

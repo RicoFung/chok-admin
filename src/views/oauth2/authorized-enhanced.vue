@@ -1,23 +1,27 @@
 <script setup lang="ts">
-import { fetchOAuth2Data } from "@/utils/oauth2-enhanced";
 import { ref, onMounted } from "vue";
-import { type DataInfo, setToken, removeToken, sessionKey } from "@/utils/auth";
+import { useRouter } from "vue-router";
+import { message } from "@/utils/message";
+import { initRouter, getTopMenu } from "@/router/utils";
+import { type DataInfo, setOAuth2Token } from "@/utils/auth";
+import { fetchOAuth2Data } from "@/utils/oauth2-enhanced";
 
 defineOptions({
   name: "OAuth2 Authorized Enhanced"
 });
 
+const router = useRouter();
 const oauth2Data: DataInfo<number> = {
   accessToken: "",
   expires: null, // Expires in 1 hour
   refreshToken: "",
-  username: "",
-  roles: []
+  username: "admin",
+  roles: ["admin"]
 };
 const oauth2DataText = ref<string | null>(null);
 
 onMounted(async () => {
-  // await fetchAccessToken();
+  // await getOAuth2Data();
 });
 
 const getOAuth2Data = async () => {
@@ -31,10 +35,20 @@ const getOAuth2Data = async () => {
       oauth2Data.refreshToken = data["refresh_token"];
       oauth2Data.expires = data["expires_in"];
       oauth2DataText.value = JSON.stringify(oauth2Data);
+      // 缓存 access_token
+      setOAuth2Token(oauth2Data);
+      // 获取后端路由
+      initRouter().then(() => {
+        console.log("TopMenu: ", getTopMenu(true).path);
+        router.push(getTopMenu(true).path);
+        message("登录成功", { type: "success" });
+      });
     } else {
+      message("登录失败", { type: "error" });
       console.error("The OAuth2 Data is null !");
     }
   } else {
+    message("授权码为空", { type: "error" });
     console.error("The authorization_code is null !");
   }
 };
