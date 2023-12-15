@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-// import { useRouter } from "vue-router";
 import { message } from "@/utils/message";
 import { initRouter, getTopMenu } from "@/router/utils";
 import { type DataInfo, setOAuth2Token } from "@/utils/auth";
 import { fetchOAuth2Data } from "@/utils/oauth2-standard";
+import { jwtDecode } from "jwt-decode";
 
 defineOptions({
   name: "OAuth2 Authorized Standard"
 });
 
-// const router = useRouter();
 const oauth2Data: DataInfo<number> = {
   accessToken: "",
   expires: null, // Expires in 1 hour
@@ -34,7 +33,9 @@ const getOAuth2Data = async () => {
       oauth2Data.accessToken = data["access_token"];
       oauth2Data.refreshToken = data["refresh_token"];
       oauth2Data.expires = data["expires_in"];
+      oauth2Data.username = jwtDecode(oauth2Data.accessToken)["sub"];
       oauth2DataText.value = JSON.stringify(oauth2Data);
+      console.log("oauth2Data <= ", oauth2DataText.value);
       // 缓存 access_token
       setOAuth2Token(oauth2Data);
       // 获取后端路由
@@ -46,7 +47,6 @@ const getOAuth2Data = async () => {
           window.location.host +
           "/#" +
           getTopMenu(true).path;
-        // router.push(getTopMenu(true).path);
         message("登录成功", { type: "success" });
       });
     } else {

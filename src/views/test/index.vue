@@ -64,7 +64,7 @@ const clickTest = () => {
       }
     })
     .then(res => {
-      tableDatas.value = res.data.list;
+      tableDatas.value = res["data"].list;
     })
     .catch(err => {
       console.error("err", err);
