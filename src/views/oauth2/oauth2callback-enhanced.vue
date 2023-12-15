@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 import { message } from "@/utils/message";
 import { initRouter, getTopMenu } from "@/router/utils";
 import { type DataInfo, setOAuth2Token } from "@/utils/auth";
@@ -10,7 +10,7 @@ defineOptions({
   name: "OAuth2 Authorized Enhanced"
 });
 
-const router = useRouter();
+// const router = useRouter();
 const oauth2Data: DataInfo<number> = {
   accessToken: "",
   expires: null, // Expires in 1 hour
@@ -40,7 +40,13 @@ const getOAuth2Data = async () => {
       // 获取后端路由
       initRouter().then(() => {
         console.log("TopMenu: ", getTopMenu(true).path);
-        router.push(getTopMenu(true).path);
+        window.location.href =
+          window.location.protocol +
+          "//" +
+          window.location.host +
+          "/#" +
+          getTopMenu(true).path;
+        // router.push(getTopMenu(true).path);
         message("登录成功", { type: "success" });
       });
     } else {
@@ -55,34 +61,7 @@ const getOAuth2Data = async () => {
 </script>
 
 <template>
-  <div>
-    <h1>OAuth2 Authorized Enhanced</h1>
-    <div>
-      <el-form-item label="OAuth2Data">
-        <el-input
-          type="textarea"
-          v-model="oauth2DataText"
-          placeholder="OAuth2Data"
-        />
-      </el-form-item>
-      <el-button
-        type="primary"
-        @click="getOAuth2Data"
-        v-motion
-        :initial="{
-          opacity: 0,
-          y: 100
-        }"
-        :enter="{
-          opacity: 1,
-          y: 0,
-          transition: {
-            delay: 500
-          }
-        }"
-      >
-        获取 OAuth2Data
-      </el-button>
-    </div>
+  <div class="flex justify-center items-center h-[640px]">
+    <h1>Redirect ......</h1>
   </div>
 </template>
