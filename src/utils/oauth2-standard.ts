@@ -10,7 +10,7 @@ export const clientConfig = {
   clientSecret: "123", // 注意：在前端代码中暴露 clientSecret 是不安全的，通常这应该在服务器端处理。
   scopes: ["openid", "test.read"],
   grantType: "authorization_code",
-  redirectUri: "https://client-server:8848/oauth2callback-standard",
+  redirectUri: "https://ui-server:8848/oauth2callback-standard",
   authServerUrl: "http://auth-server:9000",
   tokenEndpoint: "/oauth2-server/oauth2/token"
 };

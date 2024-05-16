@@ -41,12 +41,12 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       // 是否开启 https
       // https: false,
       https: {
-        key: fs.readFileSync("./client-server.key"),
-        cert: fs.readFileSync("./client-server.crt")
+        key: fs.readFileSync("./ui-server.key"),
+        cert: fs.readFileSync("./ui-server.crt")
       },
       // 端口号
       port: VITE_PORT,
-      host: "client-server",
+      host: "ui-server",
       // host: "0.0.0.0",
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
       proxy: {
@@ -54,6 +54,11 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
           target: "http://localhost:8091",
           changeOrigin: true,
           rewrite: path => path.replace(/^\/backend-api/, "")
+        },
+        "/client-api": {
+          target: "http://client-server:8090",
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/client-api/, "")
         },
         "/oauth2-server": {
           target: "http://auth-server:9000",
