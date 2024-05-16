@@ -11,8 +11,8 @@ export const clientConfig = {
   scopes: ["openid", "test.read"],
   grantType: "authorization_code",
   redirectUri: "https://ui-server:8848/oauth2callback-enhanced",
-  authServerUrl: "http://auth-server:9000",
-  tokenEndpoint: "/oauth2-server/oauth2/token"
+  authServerUrl: "http://oauth2-auth-server:9000",
+  tokenEndpoint: "/oauth2-auth-server/oauth2/token"
 };
 
 // Helper function to generate a random string for PKCE Code Verifier

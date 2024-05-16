@@ -50,20 +50,25 @@ export default ({ command, mode }: ConfigEnv): UserConfigExport => {
       // host: "0.0.0.0",
       // 本地跨域代理 https://cn.vitejs.dev/config/server-options.html#server-proxy
       proxy: {
-        "/backend-api": {
-          target: "http://localhost:8091",
+        "/oauth2-auth-server": {
+          target: "http://oauth2-auth-server:9000",
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/backend-api/, "")
+          rewrite: path => path.replace(/^\/oauth2-auth-server/, "")
         },
-        "/client-api": {
-          target: "http://client-server:8090",
+        "/oauth2-resource-server": {
+          target: "http://oauth2-resource-server:8090",
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/client-api/, "")
+          rewrite: path => path.replace(/^\/oauth2-resource-server/, "")
         },
-        "/oauth2-server": {
-          target: "http://auth-server:9000",
+        "/oauth2-resource1-server": {
+          target: "http://oauth2-resource-server:8091",
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/oauth2-server/, "")
+          rewrite: path => path.replace(/^\/oauth2-resource1-server/, "")
+        },
+        "/basic-resource-server": {
+          target: "http://basic-resource-server:8092",
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/basic-resource-server/, "")
         }
       }
     },

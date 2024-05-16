@@ -76,7 +76,9 @@ class PureHttp {
         const whiteList = [
           "/refreshToken",
           "/login",
-          "/backend-api",
+          "/oauth2-resource-server",
+          "/oauth2-resource1-server",
+          "/basic-resource-server",
           "/oauth2callback-standard",
           "/oauth2callback-enhanced"
         ];

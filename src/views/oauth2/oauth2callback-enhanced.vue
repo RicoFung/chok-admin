@@ -5,6 +5,7 @@ import { initRouter, getTopMenu } from "@/router/utils";
 import { type DataInfo, setOAuth2Token } from "@/utils/auth";
 import { fetchOAuth2Data } from "@/utils/oauth2-enhanced";
 import { jwtDecode } from "jwt-decode";
+import { storageSession } from "@pureadmin/utils";
 
 defineOptions({
   name: "OAuth2 Authorized Enhanced"
@@ -38,6 +39,8 @@ const getOAuth2Data = async () => {
       console.log("oauth2Data <= ", oauth2DataText.value);
       // 缓存 access_token
       setOAuth2Token(oauth2Data);
+      // 由于 setOAuth2Token 没有成功缓存 access_token，故手动再存一次
+      storageSession().setItem("oauth2Data", JSON.stringify(oauth2Data));
       // 获取后端路由
       initRouter().then(() => {
         console.log("TopMenu: ", getTopMenu(true).path);

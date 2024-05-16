@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { http } from "@/utils/http";
 import { PureTable } from "@pureadmin/table";
+import { storageSession } from "@pureadmin/utils";
 import { ref } from "vue";
 
 defineOptions({
@@ -28,8 +29,92 @@ const tableColumns: TableColumnList = [
 
 const tableDatas = ref([]);
 
-const clickTest = () => {
-  const url = "/backend-api/domain/customtbdemo/getList1";
+const clickTestBearer = () => {
+  const oauth2DataObj = JSON.parse(storageSession().getItem("oauth2Data"));
+  console.log("oauth2Data: ", oauth2DataObj);
+  console.log("oauth2Data accessToken: ", oauth2DataObj.accessToken);
+  const token = oauth2DataObj.accessToken;
+
+  const url = "/oauth2-resource-server/api/v3_1/customtbdemo/getList";
+
+  const requestData = {
+    data: {
+      dynamicColumns: ["tcRowid", "tcCode", "tcName"],
+      dynamicOrder: [
+        {
+          sortName: "tcRowid",
+          sortOrder: "DESC"
+        }
+      ],
+      dynamicWhere: {
+        tcCode: "",
+        tcName: "",
+        tcRowidArray: []
+      },
+      page: 1,
+      pagesize: 10
+    }
+  };
+
+  return http
+    .request("post", url, requestData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+    .then(res => {
+      tableDatas.value = res["resultInfo"];
+    })
+    .catch(err => {
+      console.error("err", err);
+    });
+};
+
+const clickTest1Bearer = () => {
+  const oauth2DataObj = JSON.parse(storageSession().getItem("oauth2Data"));
+  console.log("oauth2Data: ", oauth2DataObj);
+  console.log("oauth2Data accessToken: ", oauth2DataObj.accessToken);
+  const token = oauth2DataObj.accessToken;
+
+  const url = "/oauth2-resource1-server/api/v3/customtbdemo/getList";
+
+  const requestData = {
+    data: {
+      dynamicColumns: ["tcRowid", "tcCode", "tcName"],
+      dynamicOrder: [
+        {
+          sortName: "tcRowid",
+          sortOrder: "DESC"
+        }
+      ],
+      dynamicWhere: {
+        tcCode: "",
+        tcName: "",
+        tcRowidArray: []
+      },
+      page: 1,
+      pagesize: 10
+    }
+  };
+
+  return http
+    .request("post", url, requestData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+    .then(res => {
+      tableDatas.value = res["resultInfo"];
+    })
+    .catch(err => {
+      console.error("err", err);
+    });
+};
+
+const clickTestBasic = () => {
+  const url = "/basic-resource-server/domain/customtbdemo/getList1";
   const username = "admin";
   const password = "admin";
   const basic =
@@ -78,7 +163,7 @@ const clickTest = () => {
 
     <el-button
       type="primary"
-      @click="clickTest"
+      @click="clickTestBearer"
       v-motion
       :initial="{
         opacity: 0,
@@ -92,7 +177,45 @@ const clickTest = () => {
         }
       }"
     >
-      测试
+      测试 Bearer
+    </el-button>
+
+    <el-button
+      type="primary"
+      @click="clickTest1Bearer"
+      v-motion
+      :initial="{
+        opacity: 0,
+        y: 100
+      }"
+      :enter="{
+        opacity: 1,
+        y: 0,
+        transition: {
+          delay: 500
+        }
+      }"
+    >
+      测试1 Bearer
+    </el-button>
+
+    <el-button
+      type="primary"
+      @click="clickTestBasic"
+      v-motion
+      :initial="{
+        opacity: 0,
+        y: 100
+      }"
+      :enter="{
+        opacity: 1,
+        y: 0,
+        transition: {
+          delay: 500
+        }
+      }"
+    >
+      测试 Basic
     </el-button>
 
     <pure-table :data="tableDatas" :columns="tableColumns" />
